@@ -1,0 +1,61 @@
+# Cantera configuration for nozzle flow with chemical reactions
+phases:
+- name: gas
+  species: [gri30.yaml]
+  state: {T: 300.0, P: 101325.0}
+  thermo: ideal-gas
+  kinetics: gas
+  transport: mixture-averaged
+
+# Initial conditions
+initial_state:
+  T: 300.0  # K
+  P: 101325.0  # Pa
+  X:
+    CH4: 0.1
+    O2: 0.2
+    N2: 0.7
+
+# Boundary conditions
+inlet:
+  T: 300.0  # K
+  P: 101325.0  # Pa
+  X:
+    CH4: 0.1
+    O2: 0.2
+    N2: 0.7
+
+outlet:
+  P: 101325.0  # Pa
+
+# Reaction mechanism
+reactions:
+  mechanism: gri30
+  options:
+    skip_undeclared_species: true
+    skip_undeclared_third_bodies: true
+
+# Transport properties
+transport:
+  model: mixture-averaged
+  options:
+    log_level: 0
+    flux_limiter: 1.0
+
+# Solution parameters
+solution:
+  rtol: 1e-6
+  atol: 1e-10
+  max_steps: 1000
+  max_time: 1.0
+
+# Output options
+output:
+  format: csv
+  fields:
+    - temperature
+    - pressure
+    - density
+    - velocity
+    - species_mass_fractions
+  frequency: 100 
